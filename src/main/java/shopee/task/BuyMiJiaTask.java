@@ -1,5 +1,6 @@
 package shopee.task;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +58,8 @@ public class BuyMiJiaTask implements ITask {
 			sb.append( substitutor.replace( items ) );
 		} );
 
-		mailService.send( "百米家新商品通知_" + new Date(), String.format( Utils.getResourceAsString( TEMPLATE ), sb.toString() ) );
+		String time = new SimpleDateFormat( "yyyy-MM-dd.HH" ).format( new Date() );
+
+		mailService.send( "百米家新商品通知_" + time, String.format( Utils.getResourceAsString( TEMPLATE ), sb.toString() ) );
 	}
 }
