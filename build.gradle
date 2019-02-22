@@ -24,13 +24,13 @@ repositories {
 
 dependencies {
 	compile('com.google.code.gson:gson:2.8.5')
-	compile('com.sendgrid:sendgrid-java:4.0.1')
 	compile('org.apache.commons:commons-lang3:3.4')
 	compile('commons-io:commons-io:2.6')
 	compile('org.apache.httpcomponents:fluent-hc:4.5.2')
 	
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.springframework.boot:spring-boot-devtools')
+	compile('org.springframework.boot:spring-boot-starter-mail')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	
 	testCompile('org.springframework.boot:spring-boot-starter-test')

@@ -1,4 +1,2 @@
 server:
   port: 9527
-sendgrid:
-  api-key: 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
