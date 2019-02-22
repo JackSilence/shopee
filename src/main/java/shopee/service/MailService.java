@@ -26,7 +26,7 @@ public class MailService implements IMailService {
 	public void send( String subject, String content ) {
 		Email from = new Email( "shopee@heroku.com" ), to = new Email( "jacksilence@gmail.com" );
 
-		Mail mail = new Mail( from, subject, to, new Content( "text/plain", content ) );
+		Mail mail = new Mail( from, subject, to, new Content( "text/html", content ) );
 
 		Request request = new Request();
 
