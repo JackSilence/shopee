@@ -29,7 +29,7 @@ public class MailService implements IMailService {
 	@Autowired
 	private JavaMailSender sender;
 
-	@Value( "${sendgrid.api.key}" )
+	@Value( "${sendgrid.api.key:}" )
 	private String key;
 
 	@Override

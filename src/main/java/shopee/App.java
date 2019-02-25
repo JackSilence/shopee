@@ -14,10 +14,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 public class App {
-	@Value( "${email.username}" )
+	@Value( "${email.username:}" )
 	private String username;
 
-	@Value( "${email.password}" )
+	@Value( "${email.password:}" )
 	private String password;
 
 	public static void main( String[] args ) {
