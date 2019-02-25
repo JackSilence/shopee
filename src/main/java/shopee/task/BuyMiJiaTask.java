@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.text.StrSubstitutor;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.http.client.fluent.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -42,23 +43,27 @@ public class BuyMiJiaTask implements ITask {
 
 		Gson gson = new Gson();
 
+		Date now = new Date();
+
 		( ( List<Map<String, Object>> ) gson.fromJson( Utils.getEntityAsString( request ), Map.class ).get( "items" ) ).forEach( i -> {
 			Double shopId = ( Double ) i.get( "shopid" ), itemId = ( Double ) i.get( "itemid" );
 
 			i = ( Map<String, Object> ) gson.fromJson( Utils.getEntityAsString( Request.Get( String.format( ITEM_URL, itemId, shopId ) ) ), Map.class ).get( "item" );
 
-			Double price = ( Double ) i.get( "price_min" );
+			Double price = ( Double ) i.get( "price" ), ctime = ( Double ) i.get( "ctime" );
 
 			i.put( "price", price == null ? 0 : ( int ) ( price / 100000 ) );
 
 			i.put( "link", String.format( LINK, ( ( String ) i.get( "name" ) ).replaceAll( "\\s", "-" ), shopId, itemId ) );
+
+			i.put( "color", DateUtils.isSameDay( new Date( ( long ) ( ctime * 1000 ) ), now ) ? "#ffeb3b" : "#ffffff" );
 
 			StrSubstitutor substitutor = new StrSubstitutor( i );
 
 			sb.append( substitutor.replace( items ) );
 		} );
 
-		String time = new SimpleDateFormat( "yyyy-MM-dd.HH" ).format( new Date() );
+		String time = new SimpleDateFormat( "yyyy-MM-dd.HH" ).format( now );
 
 		mailService.send( "百米家新商品通知_" + time, String.format( Utils.getResourceAsString( TEMPLATE ), sb.toString() ) );
 	}
