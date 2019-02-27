@@ -1,8 +1,8 @@
 package shopee;
 
+import java.util.Base64;
 import java.util.Properties;
 
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,8 +31,8 @@ public class App {
 		sender.setHost( "smtp.gmail.com" );
 		sender.setPort( 465 );
 
-		sender.setUsername( new String( Base64.decodeBase64( username ) ) );
-		sender.setPassword( new String( Base64.decodeBase64( password ) ) );
+		sender.setUsername( decode( username ) );
+		sender.setPassword( decode( password ) );
 
 		Properties props = sender.getJavaMailProperties();
 
@@ -43,5 +43,9 @@ public class App {
 		props.put( "mail.smtp.ssl.enable", "true" );
 
 		return sender;
+	}
+
+	private String decode( String str ) {
+		return new String( Base64.getDecoder().decode( str ) );
 	}
 }
