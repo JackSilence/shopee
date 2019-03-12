@@ -58,7 +58,7 @@ public class BuyMiJiaTask implements ITask {
 
 			Date c = new Date( ( long ) ( ctime * 1000 ) ), ytd = DateUtils.addDays( now, -1 );
 
-			i.put( "color", DateUtils.isSameDay( c, now ) ? "#ffeb3b" : DateUtils.isSameDay( c, ytd ) ? "#bbff99" : "#ffffff" );
+			i.put( "color", DateUtils.isSameDay( c, now ) ? "#ffeb3b" : DateUtils.isSameDay( c, ytd ) ? "#EEEEE0" : "#ffffff" );
 
 			StrSubstitutor substitutor = new StrSubstitutor( i );
 
