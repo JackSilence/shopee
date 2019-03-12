@@ -25,7 +25,7 @@ public class BuyMiJiaTask implements ITask {
 
 	private static final String ITEM_URL = "https://shopee.tw/api/v2/item/get?itemid=%.0f&shopid=%.0f";
 
-	private static final String QUERY = "by=ctime&limit=10&match_id=14358222&newest=0&order=desc&page_type=shop";
+	private static final String QUERY = "by=ctime&limit=20&match_id=14358222&newest=0&order=desc&page_type=shop";
 
 	private static final String LINK = "https://shopee.tw/%s-i.%.0f.%.0f";
 
@@ -56,7 +56,9 @@ public class BuyMiJiaTask implements ITask {
 
 			i.put( "link", String.format( LINK, ( ( String ) i.get( "name" ) ).replaceAll( "\\s", "-" ), shopId, itemId ) );
 
-			i.put( "color", DateUtils.isSameDay( new Date( ( long ) ( ctime * 1000 ) ), now ) ? "#ffeb3b" : "#ffffff" );
+			Date c = new Date( ( long ) ( ctime * 1000 ) ), ytd = DateUtils.addDays( now, -1 );
+
+			i.put( "color", DateUtils.isSameDay( c, now ) ? "#ffeb3b" : DateUtils.isSameDay( c, ytd ) ? "#22ff99" : "#ffffff" );
 
 			StrSubstitutor substitutor = new StrSubstitutor( i );
 
