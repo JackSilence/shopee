@@ -50,15 +50,13 @@ public class BuyMiJiaTask implements ITask {
 
 			i = ( Map<String, Object> ) gson.fromJson( Utils.getEntityAsString( Request.Get( String.format( ITEM_URL, itemId, shopId ) ) ), Map.class ).get( "item" );
 
-			Double ctime = ( Double ) i.get( "ctime" );
-
 			int min = price( i.get( "price_min" ) ), max = price( i.get( "price_max" ) );
 
 			i.put( "price", min == max ? min : min + "<br>" + max );
 
 			i.put( "link", String.format( LINK, ( ( String ) i.get( "name" ) ).replaceAll( "\\s", "-" ), shopId, itemId ) );
 
-			Date c = new Date( ( long ) ( ctime * 1000 ) ), ytd = DateUtils.addDays( now, -1 );
+			Date c = new Date( ( long ) ( ( Double ) i.get( "ctime" ) * 1000 ) ), ytd = DateUtils.addDays( now, -1 );
 
 			i.put( "color", DateUtils.isSameDay( c, now ) ? "#ffeb3b" : DateUtils.isSameDay( c, ytd ) ? "#EEEEE0" : "#ffffff" );
 
