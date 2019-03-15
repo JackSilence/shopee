@@ -50,9 +50,11 @@ public class BuyMiJiaTask implements ITask {
 
 			i = ( Map<String, Object> ) gson.fromJson( Utils.getEntityAsString( Request.Get( String.format( ITEM_URL, itemId, shopId ) ) ), Map.class ).get( "item" );
 
-			Double price = ( Double ) i.get( "price" ), ctime = ( Double ) i.get( "ctime" );
+			Double ctime = ( Double ) i.get( "ctime" );
 
-			i.put( "price", price == null ? 0 : ( int ) ( price / 100000 ) );
+			int min = price( i.get( "price_min" ) ), max = price( i.get( "price_max" ) );
+
+			i.put( "price", min == max ? min : min + "<br>" + max );
 
 			i.put( "link", String.format( LINK, ( ( String ) i.get( "name" ) ).replaceAll( "\\s", "-" ), shopId, itemId ) );
 
@@ -60,13 +62,15 @@ public class BuyMiJiaTask implements ITask {
 
 			i.put( "color", DateUtils.isSameDay( c, now ) ? "#ffeb3b" : DateUtils.isSameDay( c, ytd ) ? "#EEEEE0" : "#ffffff" );
 
-			StrSubstitutor substitutor = new StrSubstitutor( i );
-
-			sb.append( substitutor.replace( items ) );
+			sb.append( new StrSubstitutor( i ).replace( items ) );
 		} );
 
 		String time = new SimpleDateFormat( "yyyy-MM-dd.HH" ).format( now );
 
 		mailService.send( "百米家新商品通知_" + time, String.format( Utils.getResourceAsString( TEMPLATE ), sb.toString() ) );
+	}
+
+	private int price( Object price ) {
+		return price == null ? 0 : ( int ) ( ( Double ) price / 100000 );
 	}
 }
