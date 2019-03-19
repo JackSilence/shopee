@@ -23,7 +23,7 @@ public class ExecuteController {
 	@GetMapping( value = "/execute/{name}" )
 	@ApiOperation( value = "手動執行排程任務", notes = "請輸入實作ITask的任務Bean名稱" )
 	// @ApiImplicitParam( name = "name", value = "Bean名稱", allowableValues = "buyMiJiaTask", required = true, dataType = "String" )
-	public void execute( @ApiParam( value = "Bean名稱", allowableValues = "buyMiJiaTask", required = true ) @PathVariable String name ) {
+	public void execute( @ApiParam( value = "Bean名稱", allowableValues = "buyMiJiaTask,seleniumTask", required = true ) @PathVariable String name ) {
 		Object bean = context.getBean( name );
 
 		Assert.isInstanceOf( ITask.class, bean );
