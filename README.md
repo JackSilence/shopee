@@ -5,8 +5,6 @@
 
 BuyMiJiaTask - 呼叫蝦皮的商品列表及商品明細API取得必要資訊, 透過Gmail及SendGrid發送通知信
 
-SeleniumTask - 透過Selenium + Headless Chrome直接獲取頁面資料後用jsoup parse內容.
-此Task為備用機制不設定排程, 手動執行只將結果log顯示
+SeleniumTask - 透過Selenium + Headless Chrome直接獲取頁面資料後用jsoup parse內容.<br>此Task為備用機制不設定排程, 手動執行只將結果log顯示
 
-ExecuteController - 手動執行Task使用. 將Spring ApplicationContext中符合名稱的Bean取出呼叫execute方法執行.
-加上Swagger UI所需的Annotation
+ExecuteController - 手動執行Task使用. 將Spring ApplicationContext中符合名稱的Bean取出呼叫execute方法執行.<br>加上Swagger UI所需的Annotation
