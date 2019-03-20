@@ -14,7 +14,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
-group = 'com.ibm'
+group = 'shopee'
 version = new Date().format('yyyyMMdd')
 sourceCompatibility = 1.8
 
