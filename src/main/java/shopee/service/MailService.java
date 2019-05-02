@@ -32,6 +32,12 @@ public class MailService implements IMailService {
 	@Value( "${sendgrid.api.key:}" )
 	private String key;
 
+	@Value( "${gmail.mail.to:}" )
+	private String mail1;
+
+	@Value( "${sendgrid.mail.to:}" )
+	private String mail2;
+
 	@Override
 	public void send( String subject, String content ) {
 		try {
@@ -41,7 +47,7 @@ public class MailService implements IMailService {
 
 			helper.setSubject( subject );
 			helper.setText( content, true );
-			helper.setTo( "lethington@gmail.com" );
+			helper.setTo( mail1 );
 
 			sender.send( message );
 
@@ -51,7 +57,7 @@ public class MailService implements IMailService {
 		}
 
 		try {
-			Email from = new Email( "shopee@heroku.com" ), to = new Email( "jacksilence@gmail.com" );
+			Email from = new Email( "shopee@heroku.com" ), to = new Email( mail2 );
 
 			Request request = new Request();
 
