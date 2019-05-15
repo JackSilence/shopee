@@ -28,7 +28,7 @@ public class ExecuteController {
 
 		Assert.isInstanceOf( ITask.class, bean );
 
-		log.info( "Execute task manually: " + name );
+		log.error( "Execute task manually: " + name );
 
 		( ( ITask ) bean ).execute();
 	}
