@@ -9,7 +9,8 @@
 		</filter>
 		<smtpHost>smtp.gmail.com</smtpHost>
 		<smtpPort>465</smtpPort>
-		<STARTTLS>true</STARTTLS>
+		<starttls>true</starttls>
+		<ssl>true</ssl>
 		<username>${log.mail.username}</username>
 		<password>${log.mail.password}</password>
 		<to>${log.mail.to}</to>
