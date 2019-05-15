@@ -20,7 +20,6 @@
 			<pattern>%msg%X{SID}%C%d</pattern>
 		</layout>
 	</appender>
-		
 	<root level="INFO">
 		<appender-ref ref="CONSOLE" />
 		<appender-ref ref="MAIL" />
