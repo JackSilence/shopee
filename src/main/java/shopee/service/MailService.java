@@ -51,6 +51,9 @@ public class MailService implements IMailService {
 
 			sender.send( message );
 
+			if (message != null ) {
+				throw new MessagingException( "QQQ" );
+			}
 		} catch ( MessagingException e ) {
 			throw new RuntimeException( "Failed to send: " + subject, e );
 
