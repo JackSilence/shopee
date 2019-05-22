@@ -14,11 +14,12 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 
-import shopee.service.IMailService;
-import shopee.util.Utils;
+import magic.service.IMailService;
+import magic.service.IService;
+import magic.util.Utils;
 
 @Service
-public class BuyMiJiaTask implements ITask {
+public class BuyMiJiaTask implements IService {
 	private static final String TEMPLATE = "/shopee/template/template.html", ITEMS = "/shopee/template/items.html";
 
 	private static final String SEARCH_URL = "https://shopee.tw/api/v2/search_items/?";
@@ -34,7 +35,7 @@ public class BuyMiJiaTask implements ITask {
 
 	@SuppressWarnings( "unchecked" )
 	@Scheduled( cron = "0 0 12,19 * * *" )
-	public void execute() {
+	public void exec() {
 		String items = Utils.getResourceAsString( ITEMS );
 
 		StringBuilder sb = new StringBuilder();

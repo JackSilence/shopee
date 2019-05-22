@@ -1,6 +1,5 @@
 package shopee;
 
-import java.util.Base64;
 import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.EnableScheduling;
+
+import magic.util.Utils;
 
 @SpringBootApplication
 @EnableScheduling
@@ -31,8 +32,8 @@ public class App {
 		sender.setHost( "smtp.gmail.com" );
 		sender.setPort( 465 );
 
-		sender.setUsername( decode( username ) );
-		sender.setPassword( decode( password ) );
+		sender.setUsername( Utils.decode( username ) );
+		sender.setPassword( Utils.decode( password ) );
 
 		Properties props = sender.getJavaMailProperties();
 
@@ -43,9 +44,5 @@ public class App {
 		props.put( "mail.smtp.ssl.enable", "true" );
 
 		return sender;
-	}
-
-	private String decode( String str ) {
-		return new String( Base64.getDecoder().decode( str ) );
 	}
 }

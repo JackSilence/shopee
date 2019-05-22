@@ -20,9 +20,14 @@ sourceCompatibility = 1.8
 
 repositories {
 	mavenCentral()
+	maven {
+		url 'https://jitpack.io'
+	}
 }
 
 dependencies {
+	compile('com.github.JackSilence:magic:b1129234b1')
+	
 	compile('io.springfox:springfox-swagger2:2.9.2')
 	compile('io.springfox:springfox-swagger-ui:2.9.2')
 	compile('com.google.code.gson:gson:2.8.5')

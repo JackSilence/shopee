@@ -10,22 +10,14 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import magic.service.Selenium;
 
 @Service
-public class SeleniumTask implements ITask {
-	private final Logger log = LoggerFactory.getLogger( this.getClass() );
-
+public class SeleniumTask extends Selenium {
 	private static final String URL = "https://shopee.tw/shop/14358222/search?page=0&sortBy=ctime";
 
 	private static final String XPATH = "//*[@id=\"main\"]/div/div[2]/div[2]/div/div[2]/div/div/div[2]/div";
@@ -36,23 +28,24 @@ public class SeleniumTask implements ITask {
 	private String bin;
 
 	@Override
-	public void execute() {
-		WebDriver driver = init();
+	public void exec() {
+		run( "--window-size=1280,680" );
+	}
 
+	@Override
+	protected void run( WebDriver driver ) {
 		driver.get( URL );
 
-		sleep( 5000 );
+		sleep();
 
 		// 蝦皮有些內容滑到下面才會載入
 		IntStream.range( 0, 7 ).forEach( i -> {
-			( ( JavascriptExecutor ) driver ).executeScript( "window.scrollBy(0, 200)" );
+			script( driver, "window.scrollBy(0, 200)" );
 
 			sleep( 2000 );
 		} );
 
-		WebElement element = driver.findElement( By.xpath( XPATH ) );
-
-		Document doc = Jsoup.parse( element.getAttribute( "innerHTML" ) );
+		Document doc = Jsoup.parse( driver.findElement( By.xpath( XPATH ) ).getAttribute( "innerHTML" ) );
 
 		doc.getElementsByClass( "shop-search-result-view__item" ).stream().forEach( i -> {
 			Map<String, String> map = new HashMap<>();
@@ -71,37 +64,6 @@ public class SeleniumTask implements ITask {
 			map.put( "price", children.get( children.size() > 1 ? 1 : 0 ).text() );
 
 			log.info( map.toString() );
-
 		} );
-
-		driver.quit();
-	}
-
-	private WebDriver init() {
-		ChromeOptions options = new ChromeOptions();
-
-		if ( bin.isEmpty() ) {
-			WebDriverManager.chromedriver().setup();
-
-		} else {
-			System.setProperty( "webdriver.chrome.driver", "/app/.chromedriver/bin/chromedriver" );
-
-			options.setBinary( bin );
-
-		}
-
-		options.addArguments( "--headless", "--disable-gpu", "--window-size=1280,680" );
-
-		return new ChromeDriver( options );
-	}
-
-	private void sleep( long millis ) {
-		try {
-			Thread.sleep( millis );
-
-		} catch ( InterruptedException e ) {
-			throw new RuntimeException();
-
-		}
 	}
 }

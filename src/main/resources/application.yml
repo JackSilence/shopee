@@ -1,2 +1,4 @@
+app:
+  name: SHOPEE
 server:
   port: 9527
