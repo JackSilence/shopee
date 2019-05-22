@@ -11,7 +11,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import magic.service.Selenium;
@@ -23,9 +22,6 @@ public class SeleniumTask extends Selenium {
 	private static final String XPATH = "//*[@id=\"main\"]/div/div[2]/div[2]/div/div[2]/div/div/div[2]/div";
 
 	private static final String HOST = "https://shopee.tw";
-
-	@Value( "${GOOGLE_CHROME_SHIM:}" )
-	private String bin;
 
 	@Override
 	public void exec() {
