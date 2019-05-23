@@ -1,4 +1,7 @@
 app:
   name: SHOPEE
+logging:
+  pattern:
+    console: "[%d] %p %C{0}:%L - %m%n"
 server:
   port: 9527

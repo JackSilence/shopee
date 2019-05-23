@@ -26,7 +26,7 @@ repositories {
 }
 
 dependencies {
-	compile('com.github.JackSilence:magic:b1129234b1')
+	compile('com.github.JackSilence:magic:4cd60a92c5')
 	
 	compile('io.springfox:springfox-swagger2:2.9.2')
 	compile('io.springfox:springfox-swagger-ui:2.9.2')
