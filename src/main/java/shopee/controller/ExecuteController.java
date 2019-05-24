@@ -26,6 +26,6 @@ public class ExecuteController {
 	public Map<String, String> execute( @ApiParam( value = "Bean名稱", allowableValues = "buyMiJiaTask,seleniumTask", required = true ) @PathVariable String name ) {
 		executor.exec( name );
 
-		return slack.text( "OK!" );
+		return slack.text( "OK" );
 	}
 }
