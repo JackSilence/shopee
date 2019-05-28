@@ -89,11 +89,11 @@ public class BuyMiJiaTask implements IService {
 			}
 		} );
 
+		slack.post( gson.toJson( Collections.singletonMap( "attachments", attachments ) ) );
+
 		String time = new SimpleDateFormat( "yyyy-MM-dd.HH" ).format( now );
 
 		mailService.send( "百米家新商品通知_" + time, String.format( Utils.getResourceAsString( TEMPLATE ), sb.toString() ) );
-
-		slack.post( gson.toJson( Collections.singletonMap( "attachments", attachments ) ) );
 	}
 
 	private int price( Object price ) {
