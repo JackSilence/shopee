@@ -62,7 +62,7 @@ public class BuyMiJiaTask implements IService {
 
 			int min = price( i.get( "price_min" ) ), max = price( i.get( "price_max" ) );
 
-			String name = ( String ) i.get( "name" ), price, link, color;
+			String name = ( String ) i.get( "name" ), price, link, color, title;
 
 			i.put( "price", price = min == max ? String.valueOf( min ) : min + "<br>" + max );
 
@@ -77,9 +77,9 @@ public class BuyMiJiaTask implements IService {
 			sb.append( new StrSubstitutor( i ).replace( items ) );
 
 			if ( isNow || isYtd || attachments.isEmpty() ) {
-				SlackAttachment attachment = new SlackAttachment().setTitle( String.format( "%s $%s", name, price.replace( "<br>", " - $" ) ) );
+				SlackAttachment attachment = new SlackAttachment( title = String.format( "%s $%s", name, price.replace( "<br>", " - $" ) ) );
 
-				attachments.add( attachment.setTitleLink( link ).setColor( color ).setImageUrl( String.format( IMAGE, i.get( "image" ) ) ) );
+				attachments.add( attachment.setTitle( title ).setTitleLink( link ).setColor( color ).setImageUrl( String.format( IMAGE, i.get( "image" ) ) ) );
 			}
 		} );
 
