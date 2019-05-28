@@ -2,9 +2,7 @@ package shopee.task;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +19,8 @@ import magic.service.IMailService;
 import magic.service.IService;
 import magic.service.Slack;
 import magic.util.Utils;
+import net.gpedro.integrations.slack.SlackAttachment;
+import net.gpedro.integrations.slack.SlackMessage;
 
 @Service
 public class BuyMiJiaTask implements IService {
@@ -47,7 +47,7 @@ public class BuyMiJiaTask implements IService {
 
 		StringBuilder sb = new StringBuilder();
 
-		List<Map<String, Object>> attachments = new ArrayList<>();
+		List<SlackAttachment> attachments = new ArrayList<>();
 
 		Request request = Request.Get( SEARCH_URL + QUERY );
 
@@ -62,7 +62,7 @@ public class BuyMiJiaTask implements IService {
 
 			int min = price( i.get( "price_min" ) ), max = price( i.get( "price_max" ) );
 
-			String name = ( String ) i.get( "name" ), price, link, color, title;
+			String name = ( String ) i.get( "name" ), price, link, color;
 
 			i.put( "price", price = min == max ? String.valueOf( min ) : min + "<br>" + max );
 
@@ -77,23 +77,17 @@ public class BuyMiJiaTask implements IService {
 			sb.append( new StrSubstitutor( i ).replace( items ) );
 
 			if ( isNow || isYtd || attachments.isEmpty() ) {
-				Map<String, Object> attachment = new HashMap<>();
+				SlackAttachment attachment = new SlackAttachment().setTitle( String.format( "%s $%s", name, price.replace( "<br>", " - $" ) ) );
 
-				attachment.put( "fallback", title = String.format( "%s $%s", name, price.replace( "<br>", " - $" ) ) );
-				attachment.put( "title", title );
-				attachment.put( "title_link", link );
-				attachment.put( "color", color );
-				attachment.put( "image_url", String.format( IMAGE, i.get( "image" ) ) );
-
-				attachments.add( attachment );
+				attachments.add( attachment.setTitleLink( link ).setColor( color ).setImageUrl( String.format( IMAGE, i.get( "image" ) ) ) );
 			}
 		} );
 
-		slack.post( gson.toJson( Collections.singletonMap( "attachments", attachments ) ) );
+		String time = new SimpleDateFormat( "yyyy-MM-dd.HH" ).format( now ), title;
 
-		String time = new SimpleDateFormat( "yyyy-MM-dd.HH" ).format( now );
+		mailService.send( title = "百米家新商品通知_" + time, String.format( Utils.getResourceAsString( TEMPLATE ), sb.toString() ) );
 
-		mailService.send( "百米家新商品通知_" + time, String.format( Utils.getResourceAsString( TEMPLATE ), sb.toString() ) );
+		slack.call( new SlackMessage( title ).setAttachments( attachments ) );
 	}
 
 	private int price( Object price ) {
