@@ -1,6 +1,5 @@
 package shopee.task;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,7 +42,7 @@ public class BuyMiJiaTask implements IService {
 	@SuppressWarnings( "unchecked" )
 	@Scheduled( cron = "0 0 12,19 * * *" )
 	public void exec() {
-		String items = Utils.getResourceAsString( ITEMS );
+		String items = Utils.getResourceAsString( ITEMS ), subject;
 
 		StringBuilder sb = new StringBuilder();
 
@@ -83,11 +82,9 @@ public class BuyMiJiaTask implements IService {
 			}
 		} );
 
-		String time = new SimpleDateFormat( "yyyy-MM-dd.HH" ).format( now ), title;
+		mailService.send( subject = Utils.subject( "百米家新商品通知" ), String.format( Utils.getResourceAsString( TEMPLATE ), sb.toString() ) );
 
-		mailService.send( title = "百米家新商品通知_" + time, String.format( Utils.getResourceAsString( TEMPLATE ), sb.toString() ) );
-
-		slack.call( new SlackMessage( title ).setAttachments( attachments ) );
+		slack.call( new SlackMessage( subject ).setAttachments( attachments ) );
 	}
 
 	private int price( Object price ) {
