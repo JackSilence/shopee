@@ -2,8 +2,8 @@ package shopee.test;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
-import org.apache.commons.lang3.CharEncoding;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
@@ -74,7 +74,7 @@ public class SeleniumTest {
 	}
 
 	private String url() throws UnsupportedEncodingException {
-		return URLDecoder.decode( driver.getCurrentUrl(), CharEncoding.UTF_8 );
+		return URLDecoder.decode( driver.getCurrentUrl(), StandardCharsets.UTF_8.name() );
 	}
 
 	private void wait( String xpath ) {

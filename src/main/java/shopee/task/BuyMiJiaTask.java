@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.text.StrSubstitutor;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.text.StringSubstitutor;
 import org.apache.http.client.fluent.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -73,7 +73,7 @@ public class BuyMiJiaTask implements IService {
 
 			i.put( "color", color = isNow ? "#ffeb3b" : isYtd ? "#EEEEE0" : "#ffffff" );
 
-			sb.append( new StrSubstitutor( i ).replace( items ) );
+			sb.append( new StringSubstitutor( i ).replace( items ) );
 
 			if ( isNow || isYtd || attachments.isEmpty() ) {
 				SlackAttachment attachment = new SlackAttachment( title = String.format( "%s $%s", name, price.replace( "<br>", " - $" ) ) );
