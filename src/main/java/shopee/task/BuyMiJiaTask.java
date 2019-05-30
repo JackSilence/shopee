@@ -42,7 +42,7 @@ public class BuyMiJiaTask implements IService {
 	@SuppressWarnings( "unchecked" )
 	@Scheduled( cron = "0 0 12,19 * * *" )
 	public void exec() {
-		String items = Utils.getResourceAsString( ITEMS ), subject;
+		String items = Utils.getResourceAsString( ITEMS );
 
 		StringBuilder sb = new StringBuilder();
 
@@ -75,14 +75,16 @@ public class BuyMiJiaTask implements IService {
 
 			sb.append( new StringSubstitutor( i ).replace( items ) );
 
-			if ( isNow || isYtd || attachments.isEmpty() ) {
+			if ( isNow || isYtd ) {
 				SlackAttachment attachment = new SlackAttachment( title = String.format( "%s $%s", name, price.replace( "<br>", " - $" ) ) );
 
 				attachments.add( attachment.setTitle( title ).setTitleLink( link ).setColor( color ).setImageUrl( String.format( IMAGE, i.get( "image" ) ) ) );
 			}
 		} );
 
-		mailService.send( subject = Utils.subject( "百米家新商品通知" ), String.format( Utils.getResourceAsString( TEMPLATE ), sb.toString() ) );
+		String subject = Utils.subject( "百米家".concat( attachments.isEmpty() ? "查無新商品" : "新商品通知" ) );
+
+		mailService.send( subject, String.format( Utils.getResourceAsString( TEMPLATE ), sb.toString() ) );
 
 		slack.call( new SlackMessage( subject ).setAttachments( attachments ) );
 	}
