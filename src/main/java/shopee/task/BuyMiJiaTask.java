@@ -61,7 +61,7 @@ public class BuyMiJiaTask implements IService {
 
 			int min = price( i.get( "price_min" ) ), max = price( i.get( "price_max" ) );
 
-			String name = ( String ) i.get( "name" ), price, link, color, title;
+			String name = ( String ) i.get( "name" ), price, link, title;
 
 			i.put( "price", price = min == max ? String.valueOf( min ) : min + "<br>" + max );
 
@@ -71,12 +71,14 @@ public class BuyMiJiaTask implements IService {
 
 			boolean isNow = DateUtils.isSameDay( c, now ), isYtd = DateUtils.isSameDay( c, ytd );
 
-			i.put( "color", color = isNow ? "#ffeb3b" : isYtd ? "#EEEEE0" : "#ffffff" );
+			i.put( "color", isNow ? "#ffeb3b" : isYtd ? "#EEEEE0" : "#ffffff" );
 
 			sb.append( new StringSubstitutor( i ).replace( items ) );
 
 			if ( isNow || isYtd || attachments.isEmpty() ) {
 				SlackAttachment attachment = new SlackAttachment( title = String.format( "%s $%s", name, price.replace( "<br>", " - $" ) ) );
+
+				String color = isNow ? "good" : isYtd ? "warning" : "danger";
 
 				attachments.add( attachment.setTitle( title ).setTitleLink( link ).setColor( color ).setImageUrl( String.format( IMAGE, i.get( "image" ) ) ) );
 			}
