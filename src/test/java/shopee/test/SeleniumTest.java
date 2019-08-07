@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import magic.util.Utils;
 import shopee.test.model.Search;
 
 @RunWith( SpringJUnit4ClassRunner.class )
@@ -40,7 +41,7 @@ public class SeleniumTest {
 	}
 
 	@Test
-	public void search() throws InterruptedException, UnsupportedEncodingException {
+	public void search() throws UnsupportedEncodingException {
 		driver.get( "https://shopee.tw/" );
 
 		Search search = PageFactory.initElements( driver, Search.class );
@@ -63,7 +64,7 @@ public class SeleniumTest {
 
 		search.getFirst().click();
 
-		Thread.sleep( 5000 );
+		Utils.sleep( 5000 );
 
 		log.info( "URL after click first: " + url() );
 		log.info( "Title after click first: " + driver.getTitle() ); // 可能會因為頁面還沒完全載入拿到預設的, 所以放在後面

@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import cucumber.api.java8.En;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import magic.util.Utils;
 
 public class Search implements En {
 	private static final WebDriver driver;
@@ -19,7 +20,7 @@ public class Search implements En {
 		driver = new ChromeDriver();
 	}
 
-	public Search(){
+	public Search() {
 		shopee.test.model.Search search = PageFactory.initElements( driver, shopee.test.model.Search.class );
 
 		Given( "^I enter url \"([^\"]*)\"$", ( String url ) -> {
@@ -42,12 +43,8 @@ public class Search implements En {
 			wait( shopee.test.model.Search.XPATH_FIRST );
 
 			search.getFirst().click();
-			
-			try {
-				Thread.sleep( 5000 );
 
-			} catch ( InterruptedException e ) {
-			}
+			Utils.sleep( 5000 );
 
 			driver.quit();
 		} );
