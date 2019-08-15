@@ -47,7 +47,7 @@ public class BuyMiJiaTask implements IService {
 
 		List<SlackAttachment> attachments = new ArrayList<>();
 
-		Request request = Request.Get( SEARCH_URL + QUERY );
+		Request request = Request.Get( SEARCH_URL + QUERY ).addHeader( "User-Agent", "Googlebot" );
 
 		Gson gson = new Gson();
 
