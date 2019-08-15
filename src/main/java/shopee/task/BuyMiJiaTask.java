@@ -53,7 +53,8 @@ public class BuyMiJiaTask implements IService {
 		Gson gson = new Gson();
 
 		Date now = new Date();
-
+		System.out.println( SEARCH_URL + QUERY );
+		System.out.println( Utils.getEntityAsString( request ) );
 		( ( List<Map<String, Object>> ) gson.fromJson( Utils.getEntityAsString( request ), Map.class ).get( "items" ) ).forEach( i -> {
 			Double shopId = ( Double ) i.get( "shopid" ), itemId = ( Double ) i.get( "itemid" );
 
