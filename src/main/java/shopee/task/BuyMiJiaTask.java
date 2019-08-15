@@ -83,7 +83,7 @@ public class BuyMiJiaTask implements IService {
 				attachments.add( attachment.setTitle( title ).setTitleLink( link ).setColor( color ).setImageUrl( String.format( IMAGE, i.get( "image" ) ) ) );
 			}
 		} );
-
+		System.out.println( new Gson().toJson( attachments ) );
 		mailService.send( subject = Utils.subject( "百米家新商品通知" ), String.format( Utils.getResourceAsString( TEMPLATE ), sb.toString() ) );
 
 		slack.call( new SlackMessage( subject ).setAttachments( attachments ) );
