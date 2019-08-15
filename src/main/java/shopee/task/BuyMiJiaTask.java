@@ -9,7 +9,6 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.text.StringSubstitutor;
 import org.apache.http.client.fluent.Request;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
@@ -40,7 +39,7 @@ public class BuyMiJiaTask implements IService {
 	private Slack slack;
 
 	@SuppressWarnings( "unchecked" )
-	@Scheduled( cron = "0 0 12,19 * * *" )
+	// @Scheduled( cron = "0 0 12,19 * * *" )
 	public void exec() {
 		String items = Utils.getResourceAsString( ITEMS ), subject;
 
@@ -53,8 +52,7 @@ public class BuyMiJiaTask implements IService {
 		Gson gson = new Gson();
 
 		Date now = new Date();
-		System.out.println( SEARCH_URL + QUERY );
-		System.out.println( Utils.getEntityAsString( request ) );
+
 		( ( List<Map<String, Object>> ) gson.fromJson( Utils.getEntityAsString( request ), Map.class ).get( "items" ) ).forEach( i -> {
 			Double shopId = ( Double ) i.get( "shopid" ), itemId = ( Double ) i.get( "itemid" );
 
@@ -84,7 +82,7 @@ public class BuyMiJiaTask implements IService {
 				attachments.add( attachment.setTitle( title ).setTitleLink( link ).setColor( color ).setImageUrl( String.format( IMAGE, i.get( "image" ) ) ) );
 			}
 		} );
-		System.out.println( new Gson().toJson( attachments ) );
+
 		mailService.send( subject = Utils.subject( "百米家新商品通知" ), String.format( Utils.getResourceAsString( TEMPLATE ), sb.toString() ) );
 
 		slack.call( new SlackMessage( subject ).setAttachments( attachments ) );
