@@ -1,6 +1,7 @@
 package shopee.task;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,6 @@ public class BuyMiJiaTask implements IService {
 	private Slack slack;
 
 	@SuppressWarnings( "unchecked" )
-	// @Scheduled( cron = "0 0 12,19 * * *" )
 	public void exec() {
 		String items = Utils.getResourceAsString( ITEMS ), subject;
 
@@ -53,7 +53,7 @@ public class BuyMiJiaTask implements IService {
 
 		Date now = new Date();
 
-		( ( List<Map<String, Object>> ) gson.fromJson( Utils.getEntityAsString( request ), Map.class ).get( "items" ) ).forEach( i -> {
+		( ( List<Map<String, Object>> ) gson.fromJson( Utils.getEntityAsString( request ), Map.class ).getOrDefault( "items", Collections.EMPTY_LIST ) ).forEach( i -> {
 			Double shopId = ( Double ) i.get( "shopid" ), itemId = ( Double ) i.get( "itemid" );
 
 			i = ( Map<String, Object> ) gson.fromJson( Utils.getEntityAsString( Request.Get( String.format( ITEM_URL, itemId, shopId ) ) ), Map.class ).get( "item" );
