@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.text.StringSubstitutor;
 import org.apache.http.client.fluent.Request;
@@ -93,5 +95,10 @@ public class BuyMiJiaTask implements IService {
 
 	private int price( Object price ) {
 		return price == null ? 0 : ( int ) ( ( Double ) price / 100000 );
+	}
+
+	@PostConstruct
+	private void init() {
+		exec();
 	}
 }
