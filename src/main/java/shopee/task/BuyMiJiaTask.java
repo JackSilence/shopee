@@ -12,6 +12,7 @@ import org.apache.http.client.fluent.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.MoreObjects;
 import com.google.gson.Gson;
 
 import magic.service.IMailService;
@@ -40,6 +41,7 @@ public class BuyMiJiaTask implements IService {
 	private Slack slack;
 
 	@SuppressWarnings( "unchecked" )
+	// @Scheduled( cron = "0 0 12,19 * * *" )
 	public void exec() {
 		String items = Utils.getResourceAsString( ITEMS ), subject;
 
@@ -53,7 +55,9 @@ public class BuyMiJiaTask implements IService {
 
 		Date now = new Date();
 
-		( ( List<Map<String, Object>> ) gson.fromJson( Utils.getEntityAsString( request ), Map.class ).getOrDefault( "items", Collections.EMPTY_LIST ) ).forEach( i -> {
+		Map<?, ?> result = gson.fromJson( Utils.getEntityAsString( request ), Map.class );
+
+		( ( List<Map<String, Object>> ) MoreObjects.firstNonNull( result.get( "items" ), Collections.EMPTY_LIST ) ).forEach( i -> {
 			Double shopId = ( Double ) i.get( "shopid" ), itemId = ( Double ) i.get( "itemid" );
 
 			i = ( Map<String, Object> ) gson.fromJson( Utils.getEntityAsString( Request.Get( String.format( ITEM_URL, itemId, shopId ) ) ), Map.class ).get( "item" );
