@@ -41,7 +41,6 @@ public class BuyMiJiaTask implements IService {
 	private Slack slack;
 
 	@SuppressWarnings( "unchecked" )
-	// @Scheduled( cron = "0 0 12,19 * * *" )
 	public void exec() {
 		String items = Utils.getResourceAsString( ITEMS ), subject;
 
