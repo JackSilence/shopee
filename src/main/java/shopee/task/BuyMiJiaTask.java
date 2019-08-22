@@ -36,6 +36,8 @@ public class BuyMiJiaTask implements IService {
 
 	private static final String LINK = "https://shopee.tw/%s-i.%.0f.%.0f", IMAGE = "https://cf.shopee.tw/file/%s_tn";
 
+	private static final String UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36";
+
 	@Autowired
 	private IMailService mailService;
 
@@ -53,7 +55,7 @@ public class BuyMiJiaTask implements IService {
 
 		List<SlackAttachment> attachments = new ArrayList<>();
 
-		Request request = Request.Get( SEARCH_URL + QUERY );
+		Request request = Request.Get( SEARCH_URL + QUERY ).userAgent( UA );
 
 		Gson gson = new Gson();
 
