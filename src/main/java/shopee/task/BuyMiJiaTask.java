@@ -6,12 +6,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.text.StringSubstitutor;
 import org.apache.http.client.fluent.Request;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.MoreObjects;
@@ -43,7 +43,10 @@ public class BuyMiJiaTask implements IService {
 	private Slack slack;
 
 	@SuppressWarnings( "unchecked" )
+	@Scheduled( cron = "0 0 12,19 * * *" )
 	public void exec() {
+		Utils.sleep( RandomUtils.nextInt( 1000, 10000 ) );
+
 		String items = Utils.getResourceAsString( ITEMS ), subject;
 
 		StringBuilder sb = new StringBuilder();
@@ -95,10 +98,5 @@ public class BuyMiJiaTask implements IService {
 
 	private int price( Object price ) {
 		return price == null ? 0 : ( int ) ( ( Double ) price / 100000 );
-	}
-
-	@PostConstruct
-	private void init() {
-		exec();
 	}
 }
