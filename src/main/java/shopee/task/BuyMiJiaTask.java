@@ -15,6 +15,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.net.HttpHeaders;
 import com.google.gson.Gson;
 
 import magic.service.IMailService;
@@ -55,7 +56,7 @@ public class BuyMiJiaTask implements IService {
 
 		List<SlackAttachment> attachments = new ArrayList<>();
 
-		Request request = Request.Get( SEARCH_URL + QUERY ).userAgent( UA );
+		Request request = Request.Get( SEARCH_URL + QUERY ).userAgent( UA ).setHeader( HttpHeaders.REFERER, "https://shopee.tw" );
 
 		Gson gson = new Gson();
 
