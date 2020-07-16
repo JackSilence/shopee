@@ -1,5 +1,9 @@
 buildscript {
-	repositories.jcenter()
+	repositories {
+		maven {
+			url "https://repo1.maven.org/maven2"
+		}
+	}
 	dependencies.classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.18.RELEASE'
 }
 
@@ -10,7 +14,7 @@ apply plugin: 'org.springframework.boot'
 sourceCompatibility = 1.8
 
 repositories {
-	jcenter()
+	mavenCentral()
 	maven {
 		url 'https://jitpack.io'
 	}
