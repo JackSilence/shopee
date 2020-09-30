@@ -49,10 +49,7 @@ public class SeleniumTask extends Selenium {
 			Element link = i.getElementsByTag( "a" ).first(), first = link.child( 0 ), text = first.child( 1 );
 
 			map.put( "link", HOST.concat( link.attr( "href" ) ) );
-
-			String style = first.child( 0 ).child( 0 ).attr( "style" );
-
-			map.put( "image", StringUtils.substringBetween( style, "url(\"", "\");" ) );
+			map.put( "image", first.child( 0 ).child( 0 ).attr( "src" ) );
 			map.put( "name", text.child( 0 ).text() );
 
 			Elements children = text.child( 1 ).children();
