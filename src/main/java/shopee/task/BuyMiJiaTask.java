@@ -56,18 +56,16 @@ public class BuyMiJiaTask implements IService {
 
 		List<SlackAttachment> attachments = new ArrayList<>();
 
-		Request request = Request.Get( SEARCH_URL + QUERY ).userAgent( UA ).setHeader( HttpHeaders.REFERER, "https://shopee.tw" );
-
 		Gson gson = new Gson();
 
 		Date now = new Date();
 
-		Map<?, ?> result = gson.fromJson( Utils.getEntityAsString( request ), Map.class );
+		Map<?, ?> result = gson.fromJson( Utils.getEntityAsString( get( SEARCH_URL + QUERY ) ), Map.class );
 
 		( ( List<Map<String, Object>> ) MoreObjects.firstNonNull( result.get( "items" ), Collections.EMPTY_LIST ) ).forEach( i -> {
 			Double shopId = ( Double ) i.get( "shopid" ), itemId = ( Double ) i.get( "itemid" );
 
-			i = ( Map<String, Object> ) gson.fromJson( Utils.getEntityAsString( Request.Get( String.format( ITEM_URL, itemId, shopId ) ) ), Map.class ).get( "item" );
+			i = ( Map<String, Object> ) gson.fromJson( Utils.getEntityAsString( get( String.format( ITEM_URL, itemId, shopId ) ) ), Map.class ).get( "item" );
 
 			int min = price( i.get( "price_min" ) ), max = price( i.get( "price_max" ) );
 
@@ -97,6 +95,10 @@ public class BuyMiJiaTask implements IService {
 		mailService.send( subject = Utils.subject( "百米家新商品通知" ), String.format( Utils.getResourceAsString( TEMPLATE ), sb.toString() ) );
 
 		slack.call( new SlackMessage( subject ).setAttachments( attachments ) );
+	}
+
+	private Request get( String uri ) {
+		return Request.Get( uri ).userAgent( UA ).setHeader( HttpHeaders.REFERER, "https://shopee.tw" );
 	}
 
 	private int price( Object price ) {
