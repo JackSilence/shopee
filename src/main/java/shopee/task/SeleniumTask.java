@@ -19,7 +19,7 @@ import magic.service.Selenium;
 public class SeleniumTask extends Selenium {
 	private static final String URL = "https://shopee.tw/shop/14358222/search?page=0&sortBy=ctime";
 
-	private static final String XPATH = "//*[@id=\"main\"]/div/div[2]/div[2]/div/div[2]/div/div/div[2]/div";
+	private static final String XPATH = "//*[@id=\"main\"]/div/div[2]/div[2]/div/div[2]/div/div[2]/div";
 
 	private static final String HOST = "https://shopee.tw";
 
