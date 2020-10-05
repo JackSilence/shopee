@@ -6,19 +6,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.net.HttpHeaders;
+import com.google.gson.Gson;
+
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.text.StringSubstitutor;
 import org.apache.http.client.fluent.Request;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import com.google.common.base.MoreObjects;
-import com.google.common.net.HttpHeaders;
-import com.google.gson.Gson;
 
 import magic.service.IMailService;
 import magic.service.IService;
@@ -29,8 +27,6 @@ import net.gpedro.integrations.slack.SlackMessage;
 
 @Service
 public class BuyMiJiaTask implements IService {
-	private final Logger log = LoggerFactory.getLogger( this.getClass() );
-
 	private static final String TEMPLATE = "/shopee/template/template.html", ITEMS = "/shopee/template/items.html";
 
 	private static final String SEARCH_URL = "https://shopee.tw/api/v2/search_items/?";
@@ -65,12 +61,6 @@ public class BuyMiJiaTask implements IService {
 		Date now = new Date();
 
 		Map<?, ?> result = gson.fromJson( Utils.getEntityAsString( get( SEARCH_URL + QUERY ) ), Map.class );
-
-		if ( result == null ) {
-			log.info( "無法取得BuyMiJia商品清單" );
-
-			return;
-		}
 
 		( ( List<Map<String, Object>> ) MoreObjects.firstNonNull( result.get( "items" ), Collections.EMPTY_LIST ) ).forEach( i -> {
 			Double shopId = ( Double ) i.get( "shopid" ), itemId = ( Double ) i.get( "itemid" );
