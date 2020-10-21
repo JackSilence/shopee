@@ -31,8 +31,6 @@ public class BuyMiJiaTask implements IService {
 
 	private static final String SEARCH_URL = "https://shopee.tw/api/v2/search_items/?";
 
-	private static final String ITEM_URL = "https://shopee.tw/api/v2/item/get?itemid=%.0f&shopid=%.0f";
-
 	private static final String QUERY = "by=ctime&limit=20&match_id=14358222&newest=0&order=desc&page_type=shop";
 
 	private static final String LINK = "https://shopee.tw/%s-i.%.0f.%.0f", IMAGE = "https://cf.shopee.tw/file/%s_tn";
@@ -64,8 +62,6 @@ public class BuyMiJiaTask implements IService {
 
 		( ( List<Map<String, Object>> ) MoreObjects.firstNonNull( result.get( "items" ), Collections.EMPTY_LIST ) ).forEach( i -> {
 			Double shopId = ( Double ) i.get( "shopid" ), itemId = ( Double ) i.get( "itemid" );
-
-			i = ( Map<String, Object> ) gson.fromJson( Utils.getEntityAsString( get( String.format( ITEM_URL, itemId, shopId ) ) ), Map.class ).get( "item" );
 
 			int min = price( i.get( "price_min" ) ), max = price( i.get( "price_max" ) );
 
