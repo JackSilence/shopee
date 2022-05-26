@@ -29,7 +29,7 @@ import net.gpedro.integrations.slack.SlackMessage;
 public class BuyMiJiaTask implements IService {
 	private static final String TEMPLATE = "/shopee/template/template.html", ITEMS = "/shopee/template/items.html";
 
-	private static final String SEARCH_URL = "https://shopee.tw/api/v2/search_items/?";
+	private static final String SEARCH_URL = "https://shopee.tw/api/v4/search/search_items/?";
 
 	private static final String QUERY = "by=ctime&limit=20&match_id=14358222&newest=0&order=desc&page_type=shop";
 
@@ -60,7 +60,7 @@ public class BuyMiJiaTask implements IService {
 
 		Map<?, ?> result = gson.fromJson( Utils.getEntityAsString( get( SEARCH_URL + QUERY ) ), Map.class );
 
-		( ( List<Map<String, Object>> ) MoreObjects.firstNonNull( result.get( "items" ), Collections.EMPTY_LIST ) ).forEach( i -> {
+		( ( List<Map<String, Object>> ) MoreObjects.firstNonNull( result.get( "items" ), Collections.EMPTY_LIST ) ).stream().map( i -> ( Map<String, Object> ) i.get( "item_basic" ) ).forEach( i -> {
 			Double shopId = ( Double ) i.get( "shopid" ), itemId = ( Double ) i.get( "itemid" );
 
 			int min = price( i.get( "price_min" ) ), max = price( i.get( "price_max" ) );
